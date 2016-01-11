@@ -6,7 +6,7 @@ rule extract_illumina_barcodes:
     params: sge_opts="", read_structure=config["read_structure"]
     shell:
         "mkdir -p {output.barcodes_dir}; "
-        "java -Xmx2g -jar $PICARD_DIR/ExtractIlluminaBarcodes.jar BASECALLS_DIR={input.basecalls_dir} "
+        "java -Xmx2g -jar $PICARD_DIR/picard.jar ExtractIlluminaBarcodes BASECALLS_DIR={input.basecalls_dir} "
         "OUTPUT_DIR={output.barcodes_dir} "
         "LANE=1 "
         "BARCODE_FILE={input.barcodes_file} "
