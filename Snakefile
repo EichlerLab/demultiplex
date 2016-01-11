@@ -17,8 +17,9 @@ rule extract_illumina_barcodes:
         "NUM_PROCESSORS=1"
 
 # BARCODE_FILE
+# i7 is barcode 1 and i5 is barcode 2
 rule prepare_barcodes_for_picard:
     input: "TruSeq_HT_kit_dual_index_sequences.tsv"
     output: "TruSeq_HT_kit_dual_index_sequences.tab"
     params: sge_opts=""
-    shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "barcode_sequence_1","barcode_sequence_2","barcode_name","library_name" }} else {{ print $2,$3,$1,$1 }} }}' {input} > {output}"""
+    shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "barcode_sequence_1","barcode_sequence_2","barcode_name","library_name" }} else {{ print $3,$2,$1,$1 }} }}' {input} > {output}"""
