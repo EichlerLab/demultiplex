@@ -56,7 +56,7 @@ rule prepare_multiplex_params_for_picard:
     input: "TruSeq_HT_kit_dual_index_sequences.tsv"
     output: "multiplex_params.tab"
     params: sge_opts="", fastq_dir=FASTQ_DIR
-    shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "OUTPUT_PREFIX","BARCODE_1","BARCODE_2"; print "{params.fastq_dir}/unmatched","N","N" }} else {{ print "{params.fastq_dir}/"$1,$2,$3 }} }}' {input} > {output}"""
+    shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "OUTPUT_PREFIX","BARCODE_1","BARCODE_2"; print "{params.fastq_dir}/unmatched","N","N" }} else {{ print "{params.fastq_dir}/"$1,$3,$2 }} }}' {input} > {output}"""
 
 # BARCODE_FILE
 # i7 is barcode 1 and i5 is barcode 2
