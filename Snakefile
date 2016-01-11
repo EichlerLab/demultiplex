@@ -1,5 +1,6 @@
 configfile: "config.json"
 
+INPUT_BARCODES = config["input_barcodes"]
 FASTQ_DIR=config["fastq_dir"]
 
 def _get_run_barcode(wildcards):
@@ -36,7 +37,7 @@ rule convert_illumina_basecalls_to_fastq:
         "NUM_PROCESSORS=1"
 
 rule extract_illumina_barcodes:
-    input: basecalls_dir="%s/Data/Intensities/BaseCalls" % config["basecalls_dir"], barcodes_file="TruSeq_HT_kit_dual_index_sequences.tab"
+    input: basecalls_dir="%s/Data/Intensities/BaseCalls" % config["basecalls_dir"], barcodes_file="barcodes.tab"
     output: barcodes_dir="barcodes", metrics="metrics.txt"
     params: sge_opts="", read_structure=config["read_structure"]
     shell:
@@ -53,7 +54,7 @@ rule extract_illumina_barcodes:
 
 # MULTIPLEX_PARAMS
 rule prepare_multiplex_params_for_picard:
-    input: "TruSeq_HT_kit_dual_index_sequences.tsv"
+    input: INPUT_BARCODES
     output: "multiplex_params.tab"
     params: sge_opts="", fastq_dir=FASTQ_DIR
     shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "OUTPUT_PREFIX","BARCODE_1","BARCODE_2"; print "{params.fastq_dir}/unmatched","N","N" }} else {{ print "{params.fastq_dir}/"$1,$3,$2 }} }}' {input} > {output}"""
@@ -61,7 +62,7 @@ rule prepare_multiplex_params_for_picard:
 # BARCODE_FILE
 # i7 is barcode 1 and i5 is barcode 2
 rule prepare_barcodes_for_picard:
-    input: "TruSeq_HT_kit_dual_index_sequences.tsv"
-    output: "TruSeq_HT_kit_dual_index_sequences.tab"
+    input: INPUT_BARCODES
+    output: "barcodes.tab"
     params: sge_opts=""
     shell: """awk 'OFS="\\t" {{ if (NR == 1) {{ print "barcode_sequence_1","barcode_sequence_2","barcode_name","library_name" }} else {{ print $3,$2,$1,$1 }} }}' {input} > {output}"""
