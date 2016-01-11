@@ -1,4 +1,5 @@
 {
     "basecalls_dir": "/net/eichler/vol24/projects/sequencing/miseq/backups/incoming/Nextera67_LH_160106/151230_M01123_0212_000000000-AJP1Y",
-    "read_structure": "151T8B8B151T"
+    "read_structure": "151T8B8B151T",
+    "fastq_dir": "fastq"
 }
