@@ -34,7 +34,9 @@ Load the software required for demultiplexing including Snakemake and Picard.
 . config.sh
 ```
 
-Run the demultiplexing pipeline.
+Run the demultiplexing pipeline which ultimately calls [Picard's
+IlluminaBasecallsToFastq
+command](http://broadinstitute.github.io/picard/command-line-overview.html#IlluminaBasecallsToFastq).
 
 ```
 snakemake
